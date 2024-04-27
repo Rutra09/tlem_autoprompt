@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: start;
+            align-items: start;
+            
+            height: 100vh;
+        }
+        nav.vertical {
+            height: 100%;
+            margin: 0;
+            padding: 0 1rem;
+            background-color: #333;
+            padding-top: 50px;
+        }
+        nav.vertical ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        nav.vertical ul li {
+            padding: 8px;
+            margin: 0;
+            color: white;
+            border-bottom: 1px solid #444;
+            text-align: center;
+        }
+        nav.vertical ul li:hover {
+            background-color: #3c3b3b;
+        }
+        nav.vertical ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 2em;
+        }
+        main {
+            padding: 20px;
+            flex: 1;
+        }
+        .lessons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-gap: 20px;
+        }
+        .lesson {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            height: min-content;
+            
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .code {
+            margin-top: 20px;
+            padding: 20px;
+            width: fit-content;
+            text-wrap: nowrap;
+            background-color: #282c34;
+            color: #abb2bf; 
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        pre {
+            white-space: pre-wrap;
+            width: fit-content;
+        }
+        
+
+        div >form {
+            display: flex;
+            justify-content: end;
+            align-items: center;
+        }
+        button.see {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        button[type="submit"].delete {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="vertical">
+        <ul>
+            <li><a href="/admin">Lessons</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h1>Lessons</h1>
+        <div class="lessons">
+            <% for(let key in data) { %>
+                <div class="lesson">
+                    <h2><%= key %></h2>
+                    <form method="post" action="/admin/delete">
+                        <input type="hidden" name="id" value="<%= key %>">
+                        <button class="see" type="button" onclick="window.location.href='/lesson/<%= key %>'">See</button>
+                        <button class="delete" type="submit">Delete</button>
+                    </form>
+                </div>
+            <% } %>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: start;
+            align-items: start;
+            
+            height: 100vh;
+        }
+        nav.vertical {
+            height: 100%;
+            margin: 0;
+            padding: 0 1rem;
+            background-color: #333;
+            padding-top: 50px;
+        }
+        nav.vertical ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        nav.vertical ul li {
+            padding: 8px;
+            margin: 0;
+            color: white;
+            border-bottom: 1px solid #444;
+            text-align: center;
+        }
+        nav.vertical ul li:hover {
+            background-color: #3c3b3b;
+        }
+        nav.vertical ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 2em;
+        }
+        main {
+            padding: 20px;
+            flex: 1;
+        }
+        .lesson {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            height: min-content;
+        }
+        .file {
+            margin-bottom: 20px;
+        }
+        .file h2 {
+            margin: 0;
+            padding: 0;
+            font-size: 1.5em;
+        }
+        .code {
+            margin-top: 20px;
+        }
+        .code pre {
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+            padding: 20px;
+            white-space: pre-wrap;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="vertical">
+        <ul>
+            <li><a href="/admin">Lessons</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h1><%= id %></h1>
+        <div class="lesson">
+            <%for (let i = 0; i < Object.keys(data).length; i++) {%>
+                <div class="file">
+                    <h2><%= Object.keys(data)[i] %></h2>
+                    <div class="code">
+                        <pre><%= data[Object.keys(data)[i]] %></pre>
+                    </div>
+                </div>
+            <%}%>
+        </div>
+    </main>
+</body>
+</html>

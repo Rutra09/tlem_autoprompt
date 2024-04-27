@@ -139,7 +139,7 @@ function onTaskReady() {
 }
 
 
-(function () {
+(function() {
     'use strict';
-    waitForKeyElements("#lekcja-t_tresc", onTaskReady, true);
+    waitForKeyElements("#lekcja-t_tresc", onTaskReady);
 })();
