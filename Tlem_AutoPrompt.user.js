@@ -5,7 +5,7 @@
 // @description  try to take over the world!
 // @author       ArturM
 // @match        https://edu.t-lem.com/
-
+// @downloadURL  https://github.com/Rutra09/tlem_autoprompt/raw/master/Tlem_AutoPrompt.user.js
 // @require  https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=t-lem.com
 // @grant        none
