@@ -151,7 +151,7 @@ function showPrompt(prompt) {
 }
 
 function handleQuiz() {
-
+    alert("Już 28.04.2024 o 18:00");
 }
 
 function getExcerciseText() {
