@@ -10,16 +10,13 @@
 
 ## Krok 2: Instalacja skryptu tlem_autopromptv2.user.js
 
-1. Przejdź do strony skryptu tlem_autopromptv2.user.js: [link_do_skryptu](link_do_skryptu).
-2. Kliknij przycisk "Raw" lub "Raw file".
-3. Tampermonkey powinien automatycznie wykryć skrypt i wyświetlić okno dialogowe.
-4. Kliknij przycisk "Zainstaluj" lub "Install" w oknie dialogowym Tampermonkey.
-5. Skrypt tlem_autopromptv2.user.js powinien zostać zainstalowany i gotowy do użycia.
+1. Przejdź do strony skryptu [tlem_autopromptv2.user.js ](https://github.com/Rutra09/tlem_autoprompt/raw/main/Tlem_AutoPromtv2.user.js).
+2. Tampermonkey powinien automatycznie wykryć skrypt i wyświetlić okno dialogowe.
+3. Kliknij przycisk "Zainstaluj" lub "Install" w oknie dialogowym Tampermonkey.
+4. Skrypt tlem_autopromptv2.user.js powinien zostać zainstalowany i gotowy do użycia.
 
 ## Krok 3: Używanie skryptu
 
-Po zainstalowaniu skryptu tlem_autopromptv2.user.js, powinien on automatycznie działać na odpowiednich stronach internetowych. Możesz dostosować ustawienia skryptu w panelu Tampermonkey, jeśli chcesz.
+Po zainstalowaniu skryptu tlem_autopromptv2.user.js, powinien wyświetlać się przycisk ze znakiem zapytania, po kliknięciu otwierać okno z przygotowanym promptem, guzikiem do kopiowania, i dodatkową opcją przeszukania mojej bazy w poszukiwaniu tego pytania.
 
 **Uwaga:** Upewnij się, że masz włączoną obsługę skryptów użytkownika w ustawieniach Tampermonkey, aby skrypt działał poprawnie.
-
-Dziękujemy za skorzystanie z naszych instrukcji instalacji. Jeśli masz jakiekolwiek pytania lub problemy, prosimy o kontakt.
