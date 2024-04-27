@@ -19,4 +19,14 @@
 
 Po zainstalowaniu skryptu tlem_autopromptv2.user.js, powinien wyświetlać się przycisk ze znakiem zapytania, po kliknięciu otwierać okno z przygotowanym promptem, guzikiem do kopiowania, i dodatkową opcją przeszukania mojej bazy w poszukiwaniu tego pytania.
 
+
+
 **Uwaga:** Upewnij się, że masz włączoną obsługę skryptów użytkownika w ustawieniach Tampermonkey, aby skrypt działał poprawnie.
+
+
+
+## Sekcja do zrobienia
+
+- [x] Generowanie promptów z zadania
+- [x] Komunikacja z bazą danych gotowych zadań
+- [ ] Auto rozwiązywanie testów 
