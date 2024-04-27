@@ -27,7 +27,8 @@ class Prompt {
     static promptHolderStyle = `position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9998;`;
     static h1Style = `font-size: 1.5em; margin: 0;`;
     static pStyle = `margin: 0;`;
-    static style = `position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 9999; border-radius: 10px;`;
+    // can be scrolled
+    static style = `position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 9999; border-radius: 10px; max-height: 80%; overflow-y: auto;`;
 }
 
 class Button {
@@ -233,7 +234,13 @@ function handleCode() {
                         h2.style.cssText = "margin: 0;background-color: #007bff;color: white;padding: 10px;cursor: pointer;";
                         div.appendChild(h2);
                         let p = document.createElement("p");
-                        p.innerHTML = replaceAll(data[key], "\n", "<br>");
+                        let splitedContent = data[key].split("\\n");
+                        splitedContent.forEach(function (line) {
+                            let code = document.createElement("span");
+                            code.textContent = line;
+                            p.appendChild(code);
+                            p.appendChild(document.createElement("br"));
+                        });
                         p.style.cssText = "margin: 0;padding: 10px; background-color: grey; color: white;";
                         div.appendChild(p);
                         div.style.cssText = "margin: 10px; border: 1px solid #007bff; border-radius: 5px;";
