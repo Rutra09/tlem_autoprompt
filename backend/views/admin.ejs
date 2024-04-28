@@ -112,14 +112,23 @@
         <h1>Lessons</h1>
         <div class="lessons">
             <% for(let key in data) { %>
+                <% if (data[key].id) /* means that it is a quiz */ { %>
+                    <div class="lesson">
+                        <h2>Quiz <%= data[key].id %></h2>
+                        <a href="/admin/quiz/<%= data[key].id %>">Edit</a>
+                        <a href="/admin/deletequiz/<%= data[key].id %>">Delete</a>
+                    </div>
+            <% } else { %>
                 <div class="lesson">
-                    <h2><%= key %></h2>
-                    <form method="post" action="/admin/delete">
-                        <input type="hidden" name="id" value="<%= key %>">
-                        <button class="see" type="button" onclick="window.location.href='/lesson/<%= key %>'">See</button>
-                        <button class="delete" type="submit">Delete</button>
+                    <h2>Lesson <%= key %></h2>
+                    <form action="/lesson/<%= key %>" method="get">
+                        <button class="see">See</button>
+                    </form>
+                    <form action="/delete/<%= key %>" method="post">
+                        <button type="submit" class="delete">Delete</button>
                     </form>
                 </div>
+            <% } %>
             <% } %>
         </div>
     </main>

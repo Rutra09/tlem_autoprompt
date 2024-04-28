@@ -29,4 +29,4 @@ Po zainstalowaniu skryptu tlem_autopromptv2.user.js, powinien wyświetlać się 
 
 - [x] Generowanie promptów z zadania
 - [x] Komunikacja z bazą danych gotowych zadań
-- [ ] Auto rozwiązywanie testów 
+- [x] Auto rozwiązywanie testów (Prawie, nie wszystkie dodane)

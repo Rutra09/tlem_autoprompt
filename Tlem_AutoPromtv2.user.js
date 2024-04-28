@@ -1,10 +1,7 @@
-
-
-
 // ==UserScript==
 // @name         Tlem AutoPrompt v2
 // @namespace    http://tampermonkey.net/
-// @version      2.1
+// @version      2.2
 // @description  try to take over the world!
 // @author       ArturM
 // @match        https://edu.t-lem.com/
@@ -150,8 +147,114 @@ function showPrompt(prompt) {
     }
 }
 
+function getQuizData() {
+    let questions = document.getElementById("quiz_content").querySelectorAll(".note");
+    let quizData = [];
+    questions.forEach(function (question) {
+        let questionContent = question.querySelector(".block").textContent;
+        // remove the question number
+        questionContent = questionContent.slice(questionContent.indexOf(".") + 1);
+        let questiongroupid = question.getAttribute("questiongroupid");
+        let answers = question.querySelectorAll(".radio-list > label");
+        let answersContent = [];
+        answers.forEach(function (answer) {
+            let answerContent = answer.querySelector("p").textContent;
+            answersContent.push(answerContent);
+        });
+        quizData.push({ questionContent: questionContent, questiongroupid: questiongroupid, answersContent: answersContent });
+    })
+    return quizData;
+}
+
+function requestQuizData() {
+   return new Promise((resolve, reject) => {
+        let lessonID = getLessonID();
+        // let url = `http://tlem.arturm.me/quiz/${lessonID}`;
+        let url = `http://tlem.arturm.me/quiz/${lessonID}`;
+        GM_xmlhttpRequest({
+            method: "GET",
+            url: url,
+            onload: function (response) {
+                resolve(response.responseText);
+            }
+        });
+    })
+}
+
+function stringSimlarity(str1, str2) {
+    // how many characters are the same
+    let sameChars = 0;
+    str1 = str1.toLowerCase();
+    str2 = str2.toLowerCase();
+    for (let i = 0; i < str1.length; i++) {
+        if (str1[i] === str2[i]) {
+            sameChars++;
+        }
+    
+    }
+    // how many characters are in same order, in no spaces
+    let sameCharsOrder = 0;
+    let str1NoSpaces = str1.replace(/\s/g, '');
+    let str2NoSpaces = str2.replace(/\s/g, '');
+    for (let i = 0; i < str1NoSpaces.length; i++) {
+        if (str1NoSpaces[i] === str2NoSpaces[i]) {
+            sameCharsOrder++;
+        }
+    }
+    // calc similarity
+    let similarity = sameCharsOrder / str1NoSpaces.length;
+    return similarity;
+}
+
+
+
 function handleQuiz() {
-    alert("Już 28.04.2024 o 18:00");
+    let quizData = getQuizData();
+    let quizFromDB = requestQuizData();
+    quizFromDB.then((data) => {
+       if(data === "No data") {
+           alert("Brak quizu w bazie");
+           return;
+       }
+        let parsedData = JSON.parse(data);
+        quizData.forEach(function (questionk) {
+            // get question from db
+            // '{"id":"95","question":[{"question":"Po wykonaniu kodu: int x = 0, y = 0; for ( int x = 0; x <= 10; x++ ); y = x; Zmienna y będzie miała wartość ?","answer":"10"},{"question":"Instrukcja do ... while ( x = 0; x <= 0; x++ ) spowoduje:","answer":"błąd kompilacji"},{"question":"Po wykonaniu tego kodu: for ( int x = 0; ; x++ ); break; zmienna x:","answer":"kod jest niepoprawny, spowoduje błąd kompilacji"},{"question":"Instukcja goto nazwa:","answer":"umożliwia przeskok programu w przód lub w tył do miejsca, w którym wystąpi etykieta \\"nazwa:\\"<next>jest instrukcją, użycia której należy unikać"},{"question":"W wyniku instrukcji for (;;), ciało pętli, które znajdzie się za tą instrukcją:","answer":"będzie wykonywane w nieskończoność lub do napotkania instrukcji break"},{"question":"Po wykonaniu kodu: int x = 2, y = 0; switch ( x ) { case 2: y = 1; break; case 3: y = 2; break; case 4: y = 3; break; default: y = 4; } zmienna y będzie miała wartość:","answer":"1"},{"question":"Po wykonaniu kodu: for ( int x = 0; x >= 0; x++ ) { if ( x == 0 ) continue; else break; } zmienna x będzie miała wartość:","answer":"1"},{"question":"Kod spaghetti to:","answer":"kod zagmatwany np. pętlami goto"},{"question":"Po wykonaniu kodu: int y = 0; float x = 1.5; switch ( x ) { case 0: y = 1; case 1: y = 2; case 1.5: y = 3; default: y = 4; } zmienna y będzie miała wartość:","answer":"kod się nie wykona, nastąpi błąd kompilacji"},{"question":"Po wykonaniu kodu: int x = 5, y = 0; switch ( x ) { case 0: y = 1; case 5: y = 2; case 10: y = 3; default: y = 4; } zmienna y będzie miała wartość:","answer":"4"},{"question":"Po wykonaniu kodu: int x = 2, y =5; x *= --y + 5;","answer":"zmienna x będzie równa 18, a zmienna y będzie równa 4"},{"question":"Po wykonaniu kodu: int x = 0, y = 10; while ( x <= y ) { --y; break; } zmienna y będzie miała wartość:","answer":"9"},{"question":"Pętla zagnieżdżona to:","answer":"pętla wewnątrz innej pętli"},{"question":"Dekrementacja","answer":"zmniejsza wartość zmiennej o 1"}]}' 
+            parsedData["question"].forEach(function (question) {
+                let removedSpaces = questionk.questionContent.replace(/\s/g, '');
+                let removedSpacesDB = question.question.replace(/\s/g, '');
+                if( removedSpaces == removedSpacesDB) {
+                    let questionsAnswersDOM = document.querySelector(`[questiongroupid="${questionk.questiongroupid}"]`);
+                    let answers = questionsAnswersDOM.querySelectorAll("label");
+                    answers.forEach(function (answer) {
+                        let answerContent = answer.querySelector("p").textContent;
+                        let removedSpacesAnswer = answerContent.replace(/\s/g, '');
+                        let removedSpacesAnswerDB = question.answer.replace(/\s/g, '');
+                        if (removedSpacesAnswer == removedSpacesAnswerDB) {
+                            answer.querySelector("input").click();
+                        } else {
+                            // if include any of <next>, means that more than one answer is correct
+                            if (question.answer.includes("<next>")) {
+                                console.log(question.answer);
+                                let answersList = question.answer.split("<next>");
+                                answersList = answersList.map(k => k.replace(/\s/g, '').replace("<next>", ""));
+                                answersList.forEach(function (answerIndex) {
+                                    if (answerIndex == removedSpacesAnswer) {
+                                        answer.querySelector("input").click();
+                                    }
+                                });
+                            }
+                        }
+                        
+                    });
+                    
+
+                    
+                }
+            });
+        });
+    });
+    
 }
 
 function getExcerciseText() {

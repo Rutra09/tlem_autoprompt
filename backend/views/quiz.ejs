@@ -98,18 +98,10 @@
     </style>
 </head>
 <body>
-    <form action="/" method="post">
-        <h2>Add a new lesson</h2>
-        <label for="name">ID:</label>
-        <input type="number" id="id" name="id" required>
-        <label for="content">Content:</label>
-        <textarea id="content" name="content" required></textarea>
-        <input type="submit" value="Submit">
-    </form>
-    <form action="/addquiz" method="post">
-        <h2>Add a new quiz</h2>
-        <label for="name">ID:</label>
-        <input type="number" id="id" name="id" required>
+    <form action="/admin/quiz/edit" method="post">
+        <h2>Edit Quiz</h2>
+        <label for="id">ID:</label>
+        <input type="number" id="id" name="id" value="<%= id %>" required readonly>
         <script>
             function addQuestion() {
                 var questions = document.getElementById("questions");
@@ -131,21 +123,30 @@
                 question.appendChild(deleteButton);
                 questions.appendChild(question);
             }
-
+    
+            function deleteQuestion(question) {
+                var questions = document.getElementById("questions");
+                questions.removeChild(question);
+            }
+    
         </script>
         <div class="questions" id="questions">
-            <div class="question">
-                <label for="question">Question:</label>
-                <input type="text" id="question" name="question" required>
-                <label for="answer">Answer:</label>
-                <input type="text" id="answer" name="answer" required>
-            </div>
-
+            <% data.question.forEach((question, index) => { %>
+                <div class="question">
+                    <label for="question">Question:</label>
+                    <input type="text" id="question" name="question" value="<%= question.question %>" required>
+                    <label for="answer">Answer:</label>
+                    <input type="text" id="answer" name="answer" value="<%= question.answer %>" required>
+                    <button type="button" class="delete" onclick="deleteQuestion(this.parentElement)">Delete</button>
+                </div>
+            <% }) %>
+    
         </div>
         <div class="buttongroup">
             <button type="button" onclick="addQuestion()">Add Question</button>
             <button type="submit">Submit</button>
         </div>
     </form>
+    
 </body>
 </html>

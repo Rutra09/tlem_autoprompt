@@ -25,6 +25,7 @@ app.get("/", (req, res) => {
     
 });
 
+
 function replaceAll(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
 }
@@ -64,6 +65,37 @@ app.get('/admin', (req, res) => {
     }
 });
 
+app.get('/admin/quiz/:id', (req, res) => {
+    if(req.cookies.token === process.env.ADMIN_PASS) {
+        res.render('quiz', {id: req.params.id, data: data[req.params.id]});
+    } else {
+        res.redirect('/admin');
+    }
+});
+
+app.post('/admin/quiz/edit', (req, res) => {
+    if(req.cookies.token === process.env.ADMIN_PASS) {
+        let id = req.body.id;
+        let questions = req.body.question;
+        let answers = req.body.answer;
+        let processedQuiz = {
+            id: id,
+            question: []
+        }
+        for(let i = 0; i < questions.length; i++) {
+            processedQuiz.question.push({
+                question: questions[i],
+                answer: answers[i]
+            });
+        }
+        data[id] = processedQuiz;
+        saveData(data);
+        res.redirect('/admin');
+    } else {
+        res.redirect('/admin');
+    }
+});
+
 app.post('/admin/delete', (req, res) => {
     if(req.cookies.token === process.env.ADMIN_PASS) {
         let lessonId = req.body.id;
@@ -98,6 +130,35 @@ app.get("/setLesson/", (req, res) => {
     }
     saveData(data);
     res.send("Lesson saved");
+});
+
+
+app.post('/addquiz', (req, res) => {
+    let id = req.body.id;
+    let questions = req.body.question;
+    let answers = req.body.answer;
+    let processedQuiz = {
+        id: id,
+        question: []
+    }
+    for(let i = 0; i < questions.length; i++) {
+        processedQuiz.question.push({
+            question: questions[i],
+            answer: answers[i]
+        });
+    }
+    data[id] = processedQuiz;
+    saveData(data);
+    res.send("Quiz added");
+});
+
+app.get("/quiz/:id", (req, res) => {
+    let id = req.params.id;
+    if(data[id]) {
+        res.send(data[id]);
+    } else {
+        res.send("No data");
+    }
 });
 
 
