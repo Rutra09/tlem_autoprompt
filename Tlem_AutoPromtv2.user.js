@@ -345,7 +345,7 @@ function handleCode() {
                             copyButton.textContent = "Skopiowano";
                             copyButton.style.backgroundColor = "green";
                             setTimeout(() => {
-                                copyButton.textContent = "Kopiuj";
+                                copyButton.textContent = "Kopiuj kod";
                                 copyButton.style.backgroundColor = "#007bff";
                             }, 3000);
                         });
