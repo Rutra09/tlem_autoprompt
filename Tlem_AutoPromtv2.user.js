@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tlem AutoPrompt v2
 // @namespace    http://tampermonkey.net/
-// @version      2.5
+// @version      2.6
 // @description  try to take over the world!
 // @author       ArturM
 // @match        https://edu.t-lem.com/
@@ -315,7 +315,7 @@ function handleCode() {
             ev.target.style.backgroundColor = "#007bff";
         }, 3000);
     }),
-    new Button("Sprawdź w bazie", function () {
+    new Button("Sprawdź w bazie", function (thisGB) {
         let lessonID = getLessonID();
         let url = `http://tlem.arturm.me/getLesson/?id=${lessonID}`;
         GM_xmlhttpRequest({
@@ -334,21 +334,14 @@ function handleCode() {
                         let h2 = document.createElement("h3");
                         // the break line is not working
                         h2.innerHTML = key.replace("\n", "<br>");
-                        // make 
-                        let copyButton = document.createElement("button");
-                        copyButton.textContent = "Kopiuj kod";
-                        copyButton.style.cssText = "background-color: #007bff;color: white;border: none;padding: 10px;border-radius: 5px;cursor: pointer;";
                         h2.style.cssText = "margin: 0;background-color: #007bff;color: white;padding: 10px;cursor: pointer; display: flex; justify-content: space-between;";
-                        h2.appendChild(copyButton);
-                        copyButton.addEventListener("click", function () {
-                            copyToClipboard(data[key].replace(/\\n/g, "\n"));
-                            copyButton.textContent = "Skopiowano";
-                            copyButton.style.backgroundColor = "green";
-                            setTimeout(() => {
-                                copyButton.textContent = "Kopiuj kod";
-                                copyButton.style.backgroundColor = "#007bff";
-                            }, 3000);
-                        });
+                        copyToClipboard(data[key].replace(/\\n/g, "\n"));
+                        thisGB.target.textContent = "Skopiowano kod do schowka";
+                        thisGB.target.style.backgroundColor = "green";
+                        setTimeout(() => {
+                            thisGB.target.textContent = "Sprawdź w bazie";
+                            thisGB.target.style.backgroundColor = "#007bff";
+                        }, 3000);
                         div.appendChild(h2);
                         let p = document.createElement("p");
                         let splitedContent = data[key].split("\\n");
