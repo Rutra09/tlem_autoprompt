@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tlem AutoPrompt v2
 // @namespace    http://tampermonkey.net/
-// @version      2.6
+// @version      2.7
 // @description  try to take over the world!
 // @author       ArturM
 // @match        https://edu.t-lem.com/
@@ -258,10 +258,12 @@ function handleQuiz() {
 }
 
 function getExcerciseText() {
-    let excerciseElements = document.querySelectorAll("#lekcja-t_tresc > div");
+    let excerciseElements = document.getElementById("lekcja-t_tresc").querySelectorAll("div");
     let excerciseText = "";
     excerciseElements.forEach(function (element) {
         if (element.textContent.includes("Zadanie:")) {
+            excerciseText = element.textContent;
+        }else if (element.style.cssText == "background: rgb(238, 221, 221); border: 1px solid rgb(204, 170, 170); padding: 5px 10px;"){
             excerciseText = element.textContent;
         }
     });
