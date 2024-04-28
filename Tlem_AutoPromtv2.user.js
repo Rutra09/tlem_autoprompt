@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tlem AutoPrompt v2
 // @namespace    http://tampermonkey.net/
-// @version      2.4
+// @version      2.5
 // @description  try to take over the world!
 // @author       ArturM
 // @match        https://edu.t-lem.com/
