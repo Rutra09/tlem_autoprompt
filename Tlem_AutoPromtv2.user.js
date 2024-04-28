@@ -334,7 +334,21 @@ function handleCode() {
                         let h2 = document.createElement("h3");
                         // the break line is not working
                         h2.innerHTML = key.replace("\n", "<br>");
-                        h2.style.cssText = "margin: 0;background-color: #007bff;color: white;padding: 10px;cursor: pointer;";
+                        // make 
+                        let copyButton = document.createElement("button");
+                        copyButton.textContent = "Kopiuj kod";
+                        copyButton.style.cssText = "background-color: #007bff;color: white;border: none;padding: 10px;border-radius: 5px;cursor: pointer;";
+                        h2.style.cssText = "margin: 0;background-color: #007bff;color: white;padding: 10px;cursor: pointer; display: flex; justify-content: space-between;";
+                        h2.appendChild(copyButton);
+                        copyButton.addEventListener("click", function () {
+                            copyToClipboard(data[key].replace(/\\n/g, "\n"));
+                            copyButton.textContent = "Skopiowano";
+                            copyButton.style.backgroundColor = "green";
+                            setTimeout(() => {
+                                copyButton.textContent = "Kopiuj";
+                                copyButton.style.backgroundColor = "#007bff";
+                            }, 3000);
+                        });
                         div.appendChild(h2);
                         let p = document.createElement("p");
                         let splitedContent = data[key].split("\\n");

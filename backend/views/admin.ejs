@@ -124,7 +124,8 @@
                     <form action="/lesson/<%= key %>" method="get">
                         <button class="see">See</button>
                     </form>
-                    <form action="/delete/<%= key %>" method="post">
+                    <form action="/admin/delete" method="post">
+                        <input type="hidden" name="id" value="<%= key %>">
                         <button type="submit" class="delete">Delete</button>
                     </form>
                 </div>
