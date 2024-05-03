@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Tlem AutoPrompt v2
 // @namespace    http://tampermonkey.net/
-// @version      2.7
+// @version      2.8
 // @description  try to take over the world!
 // @author       ArturM
-// @match        https://edu.t-lem.com/
+// @match        https://edu.t-lem.com/*
 // @updateURL    https://github.com/Rutra09/tlem_autoprompt/raw/master/Tlem_AutoPrompt2.user.js
 // @downloadURL  https://github.com/Rutra09/tlem_autoprompt/raw/master/Tlem_AutoPrompt2.user.js
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=t-lem.com
