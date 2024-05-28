@@ -301,6 +301,19 @@ function replaceAll(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
 }
 
+function insertCodeSQL(code, callback) {
+    waitForKeyElements("#sql_cmd", function () {
+        code.split("").forEach(() => {
+            fakeCounter(1, 1);
+        });
+        ace.edit("sql_cmd").setValue(code);
+        ace.edit("sql_cmd").clearSelection();
+        handlers.sql.process();
+        if (callback) {
+            callback();
+        }
+    });
+}
 
 function handleSQL() {
     let excerciseText = getExcerciseText();
@@ -341,23 +354,10 @@ function handleSQL() {
                         copyToClipboard(data[key].replace(/\\n/g, "\n"));
                         thisGB.target.textContent = "Skopiowano kod do schowka";
                         thisGB.target.style.backgroundColor = "green";
-                        setTimeout(() => {
-                            thisGB.target.textContent = "Sprawdź w bazie";
-                            thisGB.target.style.backgroundColor = "#007bff";
-                        }, 3000);
-                        div.appendChild(h2);
-                        let p = document.createElement("p");
-                        let splitedContent = data[key].split("\\n");
-                        splitedContent.forEach(function (line) {
-                            let code = document.createElement("span");
-                            code.textContent = line;
-                            p.appendChild(code);
-                            p.appendChild(document.createElement("br"));
-                        });
-                        p.style.cssText = "margin: 0;padding: 10px; background-color: grey; color: white;";
-                        div.appendChild(p);
-                        div.style.cssText = "margin: 10px; border: 1px solid #007bff; border-radius: 5px;";
-                        actualPrompt.appendChild(div);
+                        insertCodeSQL(data[key]);
+                        // close the prompt
+                        let promptHolder = document.getElementById("prompt-holder");
+                        promptHolder.children[0].remove();
                     }
                 }
             }
