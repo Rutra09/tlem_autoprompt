@@ -302,17 +302,12 @@ function replaceAll(str, find, replace) {
 }
 
 function insertCodeSQL(code, callback) {
-    waitForKeyElements("#sql_cmd", function () {
-        code.split("").forEach(() => {
-            fakeCounter(1, 1);
-        });
         ace.edit("sql_cmd").setValue(code);
         ace.edit("sql_cmd").clearSelection();
         handlers.sql.process();
         if (callback) {
             callback();
         }
-    });
 }
 
 function handleSQL() {
@@ -357,7 +352,8 @@ function handleSQL() {
                         insertCodeSQL(data[key]);
                         // close the prompt
                         let promptHolder = document.getElementById("prompt-holder");
-                        promptHolder.children[0].remove();
+                        promptHolder.remove();
+                        
                     }
                 }
             }
