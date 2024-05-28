@@ -101,7 +101,7 @@ function newLesson() {
                 alert("Nie ma jeszcze obsługi dla lekcji typu video");
                 break;
             case "sql":
-                alert("Nie ma jeszcze obsługi dla lekcji typu sql");
+                handleSQL();
                 break;
             default:
                 alert("Nieznany typ lekcji");
@@ -300,6 +300,74 @@ function getSourceCode() {
 function replaceAll(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
 }
+
+
+function handleSQL() {
+    let excerciseText = getExcerciseText();
+    let promptContent = `${Prompt.promptContentHeader}${excerciseText}`
+    let sourceCodeFiles = getSourceCode();
+    sourceCodeFiles.forEach(function (file) {
+        promptContent += `\n\`\`\`${file.fileName}\n${file.fileContent}\n\`\`\``;
+    });
+    let prompt = new Prompt("Prompt Dla AI", promptContent, [new Button("Kopiuj", function (ev) {
+        copyToClipboard(promptContent);
+        ev.target.textContent = "Skopiowano";
+        ev.target.style.backgroundColor = "green";
+        setTimeout(() => {
+            ev.target.textContent = "Kopiuj";
+            ev.target.style.backgroundColor = "#007bff";
+        }, 3000);
+    }),
+    new Button("Sprawdź w bazie", function (thisGB) {
+        let lessonID = getLessonID();
+        let url = `http://tlem.arturm.me/getLesson/?id=${lessonID}`;
+        GM_xmlhttpRequest({
+            method: "GET",
+            url: url,
+            onload: function (response) {
+                if (response.responseText === "No data for this lesson") {
+                    alert("Brak danych w bazie");
+                } else {
+                    console.log(response.responseText);
+                    let data = JSON.parse(response.responseText);
+                    console.log(data);
+                    let actualPrompt = document.getElementById("prompt-holder").querySelector("p");
+                    for (let key in data) {
+                        let div = document.createElement("div");
+                        let h2 = document.createElement("h3");
+                        // the break line is not working
+                        h2.innerHTML = key.replace("\n", "<br>");
+                        h2.style.cssText = "margin: 0;background-color: #007bff;color: white;padding: 10px;cursor: pointer; display: flex; justify-content: space-between;";
+                        copyToClipboard(data[key].replace(/\\n/g, "\n"));
+                        thisGB.target.textContent = "Skopiowano kod do schowka";
+                        thisGB.target.style.backgroundColor = "green";
+                        setTimeout(() => {
+                            thisGB.target.textContent = "Sprawdź w bazie";
+                            thisGB.target.style.backgroundColor = "#007bff";
+                        }, 3000);
+                        div.appendChild(h2);
+                        let p = document.createElement("p");
+                        let splitedContent = data[key].split("\\n");
+                        splitedContent.forEach(function (line) {
+                            let code = document.createElement("span");
+                            code.textContent = line;
+                            p.appendChild(code);
+                            p.appendChild(document.createElement("br"));
+                        });
+                        p.style.cssText = "margin: 0;padding: 10px; background-color: grey; color: white;";
+                        div.appendChild(p);
+                        div.style.cssText = "margin: 10px; border: 1px solid #007bff; border-radius: 5px;";
+                        actualPrompt.appendChild(div);
+                    }
+                }
+            }
+        })
+    }),
+    new Button("X", function () { document.getElementById("prompt-holder").remove() }, "background-color: red;color: white; border: none; height: min-content; padding: 10px; border-radius: 5px; cursor: pointer;")]);
+    showPrompt(prompt);
+
+}
+
 
 function handleCode() {
     let excerciseText = getExcerciseText();
