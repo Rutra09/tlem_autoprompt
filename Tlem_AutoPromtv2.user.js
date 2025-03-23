@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tlem AutoPrompt v2
 // @namespace    http://tampermonkey.net/
-// @version      2.8
+// @version      2.9
 // @description  try to take over the world!
 // @author       ArturM
 // @match        https://edu.t-lem.com/*
@@ -169,8 +169,8 @@ function getQuizData() {
 function requestQuizData() {
    return new Promise((resolve, reject) => {
         let lessonID = getLessonID();
-        // let url = `http://tlem.arturm.me/quiz/${lessonID}`;
-        let url = `http://tlem.arturm.me/quiz/${lessonID}`;
+        // let url = `http://tlem.arturm.pl/quiz/${lessonID}`;
+        let url = `http://tlem.arturm.pl/quiz/${lessonID}`;
         GM_xmlhttpRequest({
             method: "GET",
             url: url,
@@ -328,7 +328,7 @@ function handleSQL() {
     }),
     new Button("Sprawdź w bazie", function (thisGB) {
         let lessonID = getLessonID();
-        let url = `http://tlem.arturm.me/getLesson/?id=${lessonID}`;
+        let url = `http://tlem.arturm.pl/getLesson/?id=${lessonID}`;
         GM_xmlhttpRequest({
             method: "GET",
             url: url,
@@ -383,7 +383,7 @@ function handleCode() {
     }),
     new Button("Sprawdź w bazie", function (thisGB) {
         let lessonID = getLessonID();
-        let url = `http://tlem.arturm.me/getLesson/?id=${lessonID}`;
+        let url = `http://tlem.arturm.pl/getLesson/?id=${lessonID}`;
         GM_xmlhttpRequest({
             method: "GET",
             url: url,
